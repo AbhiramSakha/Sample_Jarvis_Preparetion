@@ -1,151 +1,60 @@
 <p align="center">
-  <img src="assets/jarvis-banner.svg" alt="Jarvis animated banner" width="800">
+  <img src="assets/jarvis-banner.svg" alt="JARVIS animated banner" width="800">
 </p>
 
 <p align="center">
-  <strong>Your Personal AI Assistant. Powered by Local & Cloud Intelligence.</strong>
-</p>
-
-<p align="center">
-  An advanced personal AI assistant inspired by Iron Man's JARVIS, combining local LLM intelligence, voice interaction, automation, and a futuristic animated interface.
+  <strong>A personal AI assistant with local (Ollama) and cloud (Claude) brains, voice control, and an animated interface.</strong>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python&logoColor=white" />
   <img src="https://img.shields.io/badge/Ollama-Local_AI-black?style=for-the-badge&logo=ollama&logoColor=white" />
   <img src="https://img.shields.io/badge/Anthropic-Claude-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Status-Development-red?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Status-In_Development-red?style=for-the-badge" />
 </p>
 
 ---
 
-## ◈ SYSTEM OVERVIEW
+## Features
 
-JARVIS is a next-generation personal AI assistant designed to bring intelligent conversation, voice commands, and automation into one unified experience.
-
-It supports locally hosted AI models through **Ollama** and cloud-based intelligence through **Anthropic Claude**.
-
-## ◈ CORE CAPABILITIES
-
-| Feature | Description |
+| | |
 |---|---|
-| 🧠 Local Intelligence | Run AI models locally using Ollama |
-| ☁️ Cloud Intelligence | Connect with Anthropic Claude |
-| 🎙️ Voice Interaction | Speak naturally with JARVIS |
-| 💬 Smart Conversation | Interactive text-based communication |
-| 🔧 Tool Integration | Extend capabilities using Python tools |
-| 🔴 Animated Interface | Futuristic holographic assistant dashboard |
-| 🔒 Privacy | Local inference with Ollama |
+| 🧠 **Local AI** | Run models privately on your machine with Ollama |
+| ☁️ **Cloud AI** | Switch to Anthropic Claude with one setting |
+| 🎙️ **Voice** | Whisper speech recognition + text-to-speech |
+| 🔧 **Tools** | Add new abilities with a single decorator |
+| 🔴 **Animated UI** | Orb with idle, listening, thinking and speaking states *(planned)* |
 
-## ◈ VISUAL EXPERIENCE
-
-The planned JARVIS interface features:
-
-- Animated holographic AI core.
-- Premium red and blue neon visual theme.
-- Dynamic voice waveform visualization.
-- Listening, Thinking, and Speaking states.
-- Real-time conversation interface.
-- Futuristic system dashboard.
-
-## ◈ TECHNOLOGY STACK
-
-- Python
-- Ollama
-- Anthropic Claude API
-- Whisper
-- Text-to-Speech
-- HTML, CSS, JavaScript
-
-## ◈ INSTALLATION
-
-**01 — Clone Repository**
+## Quick Start
 
 ```bash
-git clone YOUR_REPOSITORY_URL
-cd jarvis
-```
+git clone https://github.com/AbhiramSakha/Sample_Jarvis_Preparetion.git
+cd Sample_Jarvis_Preparetion
 
-**02 — Create Virtual Environment**
-
-```bash
 python -m venv venv
-```
-
-Windows:
-
-```powershell
-venv\Scripts\activate
-```
-
-Linux / macOS:
-
-```bash
-source venv/bin/activate
-```
-
-**03 — Install Dependencies**
-
-```bash
+venv\Scripts\activate          # Linux/macOS: source venv/bin/activate
 pip install -r requirements.txt
+
+copy .env.example .env         # Linux/macOS: cp .env.example .env
 ```
 
-**04 — Install Ollama**
+Then pick a brain and edit `.env`:
 
-Download: https://ollama.com/download
+| Backend | Setup | `.env` |
+|---|---|---|
+| **Ollama** (local, free) | Install [Ollama](https://ollama.com/download), run `ollama pull llama3.2` | `AI_PROVIDER=ollama`<br>`OLLAMA_MODEL=llama3.2`<br>`OLLAMA_BASE_URL=http://localhost:11434` |
+| **Claude** (cloud) | Get an API key from Anthropic | `AI_PROVIDER=anthropic`<br>`ANTHROPIC_API_KEY=your_api_key` |
 
-Pull a local model:
+## Run
 
 ```bash
-ollama pull llama3.2
+python main.py            # text mode
+python main.py --voice    # voice mode: say "Jarvis, what time is it?"
 ```
 
-**05 — Configure Environment**
+## Add a Tool
 
-Windows:
-
-```powershell
-copy .env.example .env
-```
-
-Linux / macOS:
-
-```bash
-cp .env.example .env
-```
-
-For local AI:
-
-```env
-AI_PROVIDER=ollama
-OLLAMA_MODEL=llama3.2
-OLLAMA_BASE_URL=http://localhost:11434
-```
-
-For Anthropic:
-
-```env
-AI_PROVIDER=anthropic
-ANTHROPIC_API_KEY=your_api_key
-```
-
-**06 — Activate JARVIS**
-
-Text mode:
-
-```bash
-python main.py
-```
-
-Voice mode:
-
-```bash
-python main.py --voice
-```
-
-## ◈ EXTENSIBILITY
-
-JARVIS supports custom tools through a simple decorator-based registry.
+Create a function in `tools/`, decorate it, and import the file in `tools/__init__.py`:
 
 ```python
 from tools.registry import registry
@@ -155,57 +64,49 @@ def tell_joke():
     return "Why do programmers prefer dark mode? Because light attracts bugs."
 ```
 
-Import the tool inside `tools/__init__.py` to register it. Use `confirm=True` for anything risky.
+Use `confirm=True` for anything risky.
 
-## ◈ PROJECT STRUCTURE
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Wakes on noise or ignores you | Tune `SILENCE_THRESHOLD` in `config.py` |
+| Poor speech recognition | Set `WHISPER_MODEL = "small.en"` |
+| No voice on Linux | `sudo apt install espeak-ng` |
+| Ollama connection refused | Run `ollama serve` and check `OLLAMA_BASE_URL` |
+| Model ignores tools | Use a tool-capable model such as `llama3.1` |
+
+<details>
+<summary><strong>Project structure</strong></summary>
 
 ```text
-JARVIS/
+jarvis/
 ├── main.py
 ├── config.py
 ├── requirements.txt
 ├── .env.example
-├── assets/
-│   └── jarvis-banner.svg
+├── assets/jarvis-banner.svg
 ├── tools/
 │   ├── __init__.py
 │   └── registry.py
-├── frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
-└── README.md
+└── frontend/
+    ├── index.html
+    ├── style.css
+    └── script.js
 ```
 
-## ◈ TROUBLESHOOTING
+</details>
 
-- Wakes up on noise / ignores you: tune `SILENCE_THRESHOLD` in `config.py`.
-- Poor recognition: set `WHISPER_MODEL = "small.en"`.
-- Linux TTS needs: `sudo apt install espeak-ng`
-- Ollama connection refused: run `ollama serve` and check `OLLAMA_BASE_URL`.
-- Model ignores tools: switch to a tool-capable model (e.g. `llama3.1`).
+## Roadmap
 
-## ◈ ROADMAP
+- [x] Core assistant and tool registry
+- [ ] Ollama integration
+- [ ] Claude integration
+- [ ] Animated interface with live voice visualization
+- [ ] Desktop app and system automation
 
-- [x] Core Python assistant
-- [x] Extensible tool registry
-- [ ] Ollama local AI integration
-- [ ] Anthropic cloud AI integration
-- [ ] Animated holographic interface
-- [ ] Real-time voice visualization
-- [ ] Desktop assistant application
-- [ ] Advanced system automation
+## Author
 
-## ◈ DEVELOPER
+**Sakha Abhiram** · [@AbhiramSakha](https://github.com/AbhiramSakha)
 
-**Sakha Abhiram**
-
-GitHub: [@AbhiramSakha](https://github.com/AbhiramSakha)
-
----
-
-<p align="center">
-  <strong>J.A.R.V.I.S — INTELLIGENCE. REDEFINED.</strong>
-  <br/>
-  <sub>Built for a smarter tomorrow.</sub>
-</p>
+<p align="center"><sub>J.A.R.V.I.S — Just A Rather Very Intelligent System</sub></p>
